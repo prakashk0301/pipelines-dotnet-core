@@ -39,7 +39,6 @@ steps:
   displayName: 'dotnet build'
   inputs:
     command: 'build'
-    arguments: '--configuration $(buildConfiguration)'
     projects: 'pipelines-dotnet-core.csproj'
 
 - task: DotNetCoreCLI@2
