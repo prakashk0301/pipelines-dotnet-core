@@ -5,33 +5,53 @@
 
 trigger:
 - master
+- azure-pipeline-ado
 
 pool:
   vmImage: 'windows-2019'
 
 steps:
 - task: DotNetCoreCLI@2
+  displayName: 'dotnet restore'
   inputs:
     command: 'restore'
     projects: 'pipelines-dotnet-core.csproj'
     feedsToUse: 'select'
 
+- task: SonarCloudPrepare@1
+  inputs:
+    SonarCloud: 'ado-integration-for-prakash-org'
+    organization: 'dotnetprakash'
+    scannerMode: 'MSBuild'
+    projectKey: 'dotnetprakash'
+    projectName: 'dotnetprakash'
+
 - task: DotNetCoreCLI@2
+  displayName: 'dotnet test'
   inputs:
     command: 'test'
     projects: 'pipelines-dotnet-core.csproj'
 
 - task: DotNetCoreCLI@2
+  displayName: 'dotnet build'
   inputs:
     command: 'build'
     projects: 'pipelines-dotnet-core.csproj'
 
+- task: SonarCloudAnalyze@1
+
+- task: SonarCloudPublish@1
+  inputs:
+    pollingTimeoutSec: '300'
+
 - task: DotNetCoreCLI@2
+  displayName: 'dotnet publish'
   inputs:
     command: 'publish'
     publishWebProjects: true
 
 - task: PublishBuildArtifacts@1
+  displayName: 'publish build artifacts'
   inputs:
     PathtoPublish: '$(Build.SourcesDirectory)'
     ArtifactName: 'drop'
