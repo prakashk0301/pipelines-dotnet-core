@@ -39,13 +39,14 @@ steps:
   displayName: 'dotnet build'
   inputs:
     command: 'build'
+    arguments: --configuration $(BuildConfiguration) --verbosity diagnostic --force
     projects: 'pipelines-dotnet-core.csproj'
 
 - task: DotNetCoreCLI@2
   displayName: 'dotnet test'
   inputs:
     command: 'test'
-    arguments: '--configuration $(buildConfiguration) /p:CollectCoverage=true /p:CoverletOutputFormat=cobertura /p:CoverletOutput=$(Build.SourcesDirectory)/TestResults/Coverage/'
+    arguments: '--configuration $(BuildConfiguration) /p:CollectCoverage=true /p:CoverletOutputFormat=cobertura /p:CoverletOutput=$(Build.SourcesDirectory)/TestResults/Coverage/'
     publishTestResults: true
     projects: '**/test-library/*.csproj' # update with your test project directory
 
