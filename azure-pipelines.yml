@@ -26,16 +26,18 @@ steps:
     projectKey: 'dotnetprakash'
     projectName: 'dotnetprakash'
 
-- task: DotNetCoreCLI@2
-  displayName: 'dotnet test'
-  inputs:
-    command: 'test'
-    projects: 'pipelines-dotnet-core.csproj'
+
 
 - task: DotNetCoreCLI@2
   displayName: 'dotnet build'
   inputs:
     command: 'build'
+    projects: 'pipelines-dotnet-core.csproj'
+
+- task: DotNetCoreCLI@2
+  displayName: 'dotnet test'
+  inputs:
+    command: 'test'
     projects: 'pipelines-dotnet-core.csproj'
 
 - task: SonarCloudAnalyze@1
